@@ -1,1 +1,15 @@
+name: Keep Supabase Awake
+on:
+  schedule:
+    - cron: '0 12 * * 1,4' # Runs every Monday and Thursday at noon UTC
+  workflow_dispatch: # Allows you to run it manually
 
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send a database request
+        run: |
+          curl -s "${{ secrets.SUPABASE_URL }}/rest/v1/YOUR_TABLE_NAME?limit=1" \
+          -H "apikey: ${{ secrets.SUPABASE_KEY }}" \
+          -H "Authorization: Bearer ${{ secrets.SUPABASE_KEY }}"
