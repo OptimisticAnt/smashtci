@@ -1,7 +1,7 @@
 name: Keep Supabase Awake
 on:
   schedule:
-    - cron: '0 12 * * 1,4' # Every Monday and Thursday at noon UTC
+    - cron: '0 12 * * 1,4'
   workflow_dispatch:
 
 jobs:
@@ -9,15 +9,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Send a database request
-        env:
-          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
         run: |
-          if [ -z "$SUPABASE_KEY" ]; then
-            echo "Missing SUPABASE_KEY secret. Add it in GitHub repository settings > Secrets and variables > Actions."
-            exit 1
-          fi
-
+          KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh3bXB5ZHlleHFjdG5pZ3Bncm5nIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI5MzcwMjgsImV4cCI6MjA4ODUxMzAyOH0.2__OhmRs2L-vrhHptapK1WK5j2EJsFCoiAZfFFO910k"
           curl -sf "https://hwmpydyexqctnigpgrng.supabase.co/rest/v1/store?select=*&limit=1" \
-            -H "apikey: $SUPABASE_KEY" \
-            -H "Authorization: Bearer $SUPABASE_KEY" -o /dev/null
+            -H "apikey: $KEY" \
+            -H "Authorization: Bearer $KEY" -o /dev/null
           echo "Supabase pinged OK"
