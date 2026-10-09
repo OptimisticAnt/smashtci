@@ -8,10 +8,11 @@ jobs:
   ping:
     runs-on: ubuntu-latest
     steps:
-      - name: Send a database request
+      - name: Ping Supabase
         run: |
-          KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh3bXB5ZHlleHFjdG5pZ3Bncm5nIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI5MzcwMjgsImV4cCI6MjA4ODUxMzAyOH0.2__OhmRs2L-vrhHptapK1WK5j2EJsFCoiAZfFFO910k"
-          curl -sf "https://hwmpydyexqctnigpgrng.supabase.co/rest/v1/store?select=*&limit=1" \
-            -H "apikey: $KEY" \
-            -H "Authorization: Bearer $KEY" -o /dev/null
-          echo "Supabase pinged OK"
+          CODE=$(curl -s -o /dev/null -w "%{http_code}" \
+            "https://xjdvbxvhjasqhlawiiji.supabase.co/rest/v1/" \
+            -H "apikey: sb_publishable_j2X9ySmlrJRQQeqQFzbugw_H12nwE8P")
+          echo "Supabase responded: $CODE"
+          if [ "$CODE" = "000" ] || [ "$CODE" -ge 500 ]; then exit 1; fi
+          echo "Supabase is awake"
